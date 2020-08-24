@@ -1,12 +1,11 @@
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', function () {
     "use strict";
-
-    var WELCOME_MSG = '*hello*';
 
     var mainDiv = document.querySelector('.main');
     var textDiv = document.querySelector('.text');
     var inputField = document.querySelector('.inputbox');
-    var shareLinkField = document.querySelector('.js-share-link');
+    const modeLetter = document.querySelector('#mode_letter');
+    const modeFlow = document.querySelector('#mode_flow');
     var charboxTemplate = document.querySelector('#charbox-template');
 
     var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -14,7 +13,6 @@ window.addEventListener('DOMContentLoaded', function() {
     function updateFragment(text) {
         // Don't spam the browser history & strip query strings.
         window.location.replace(location.origin + '/#' + encodeURIComponent(text));
-        shareLinkField.value = location.origin + '/' + location.hash;
     }
 
     function clearChars() {
@@ -30,13 +28,13 @@ window.addEventListener('DOMContentLoaded', function() {
 
         clearChars();
 
-        text.split('').forEach(function(chr) {
+        text.split('').forEach(function (chr) {
             var charbox = charboxTemplate.content.cloneNode(true);
             var charElem = charbox.querySelector('.char');
             charElem.style.fontSize = fontSize + 'vw';
 
-            if (chr !== ' ') {
-                charElem.textContent = chr;
+            if (chr.match(/[a-zA-Z0-9]/i)) {
+                charElem.textContent = chr.toUpperCase();
             } else {
                 charElem.innerHTML = '&nbsp;';
             }
@@ -63,15 +61,15 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 
     function onInput(evt) {
-        updateFragment(evt.target.value);
+        if (modeLetter.checked && evt.data !== null) {
+            // replace the old value
+            updateFragment(evt.data);
+        } else {
+            updateFragment(evt.target.value);
+        }
     }
 
     function enterInputMode(evt) {
-        var defaultHash = '#' + encodeURIComponent(WELCOME_MSG);
-        if (location.hash === defaultHash) {
-            updateFragment('');
-            renderText();
-        }
         inputField.focus();
     }
 
@@ -95,8 +93,6 @@ window.addEventListener('DOMContentLoaded', function() {
 
         // Make sure we're scrolled to the top on mobile
         modalDiv.scrollTop = 0;
-
-        ga('send', 'event', 'modal-show', sel);
     }
 
     function hideModal(sel) {
@@ -107,46 +103,9 @@ window.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('keypress', enterInputMode, false);
     }
 
-    function initAnalytics() {
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        ga('set', 'anonymizeIp', true);
-        ga('create', 'UA-37242602-2', 'auto');
-        ga('send', 'pageview');
-
-        window.twttr = window.twttr || {
-            _e: [],
-            ready: function(f) {
-                this._e.push(f);
-            }
-        };
-
-        twttr.ready(function (twttr) {
-            twttr.events.bind('follow', function(event) {
-                ga('send', 'event', 'twitter', 'follow');
-            });
-            twttr.events.bind('tweet', function(event) {
-                ga('send', 'event', 'twitter', 'tweet');
-            });
-        });
-    }
-
-    document.querySelector('.js-help-button').addEventListener('click', function(evt) {
+    document.querySelector('.js-help-button').addEventListener('click', function (evt) {
         evt.preventDefault();
         showModal('.js-help-modal');
-    }, false);
-
-    document.querySelector('.js-share-button').addEventListener('click', function(evt) {
-        evt.preventDefault();
-        showModal('.js-share-modal');
-
-        // Don't pop up the keyboard on mobile
-        if (!isMobile) {
-            shareLinkField.select();
-        }
     }, false);
 
     inputField.addEventListener('input', onInput, false);
@@ -154,10 +113,5 @@ window.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('keypress', enterInputMode, false);
     window.addEventListener('hashchange', renderText, false);
 
-    if (!location.hash) {
-        updateFragment(WELCOME_MSG);
-    }
-
     renderText();
-    initAnalytics();
 });

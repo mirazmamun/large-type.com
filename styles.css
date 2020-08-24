@@ -1,6 +1,6 @@
-/*** Common ***********************************************************/
+** Common **********************************************************
 
-* {
+/* * {
     margin: 0;
     padding: 0;
 }
@@ -58,7 +58,7 @@ input:focus {
 
 input::-webkit-input-placeholder {
     color: #ccc;
-}
+} */
 
 /*** Anims ************************************************************/
 
@@ -94,7 +94,7 @@ input::-webkit-input-placeholder {
     margin-left: 35%;
     margin-right: 35%;
     margin-top: 10px;
-    position: absolute;
+    /* position: absolute; */
     top: 0;
     width: 30%;
 }
@@ -122,6 +122,8 @@ input::-webkit-input-placeholder {
     color: #222;
     text-decoration: underline;
 }
+
+/* the display text */
 
 .text {
     border-radius: 10px;

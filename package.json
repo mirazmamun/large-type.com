@@ -1,0 +1,23 @@
+{
+  "name": "large-type.com",
+  "version": "1.0.0",
+  "description": "Large-type.com is a utility website that lets you **display & share text in a very large font** directly from your browser.",
+  "main": "scripts.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mirazmamun/large-type.com.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mirazmamun/large-type.com/issues"
+  },
+  "homepage": "https://github.com/mirazmamun/large-type.com#readme",
+  "devDependencies": {
+    "serve": "^11.3.2"
+  }
+}
